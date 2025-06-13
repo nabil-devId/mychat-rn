@@ -1,6 +1,6 @@
 // screens/ChatScreen.tsx
 import React, { useState, useEffect, useCallback } from "react";
-import { GiftedChat, IMessage } from "react-native-gifted-chat"; // Import IMessage type
+import { GiftedChat, IMessage } from "react-native-gifted-chat";
 import { db, auth } from "../../firebaseConfig";
 import {
   collection,
@@ -14,12 +14,11 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { ChatScreenProps } from "../../NavigationTypes"; // Import our types
+import { ChatScreenProps } from "../../NavigationTypes";
 
 const ChatScreen = ({ route }: ChatScreenProps) => {
-  // Use the prop type here
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const { chatId } = route.params; // `chatId` is now type-safe
+  const { chatId } = route.params;
 
   useEffect(() => {
     const messagesQuery = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "desc"));
@@ -28,10 +27,9 @@ const ChatScreen = ({ route }: ChatScreenProps) => {
       const loadedMessages = querySnapshot.docs.map((doc) => {
         const firebaseData = doc.data();
         const data: IMessage = {
-          // Create a strongly-typed message object
           _id: doc.id,
           text: firebaseData.text,
-          createdAt: (firebaseData.createdAt as Timestamp).toDate(), // Cast to Timestamp
+          createdAt: (firebaseData.createdAt as Timestamp).toDate(),
           user: firebaseData.user,
         };
         return data;
@@ -49,7 +47,7 @@ const ChatScreen = ({ route }: ChatScreenProps) => {
       const messageToSend = messages[0];
       addDoc(collection(db, "chats", chatId, "messages"), {
         ...messageToSend,
-        createdAt: new Date(), // Use JS Date for sending
+        createdAt: new Date(),
       });
 
       updateDoc(doc(db, "chats", chatId), {

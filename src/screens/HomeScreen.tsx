@@ -3,7 +3,7 @@ import { View, Button, FlatList, Text, TouchableOpacity, StyleSheet, Alert } fro
 import { auth, db, adminAuth } from "../../firebaseConfig";
 import { signOut } from "firebase/auth";
 import { collection, addDoc, query, where, getDocs, onSnapshot } from "firebase/firestore";
-import { HomeScreenProps } from "../../NavigationTypes"; // Import our types
+import { HomeScreenProps } from "../../NavigationTypes";
 
 interface Chat {
   id: string;
